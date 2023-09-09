@@ -1,3 +1,7 @@
+# EVM Compatible JavaCard
+The JavaCard uses EC SECP256K1 to generate secure keys and sign messages
+
+
 Setting up the build environment:
 
 1.) Clone the repo
