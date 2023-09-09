@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<classpath>
+	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER">
+		<attributes>
+			<attribute name="module" value="true"/>
+			<attribute name="limit-modules" value="java.se,jdk.accessibility,jdk.httpserver,jdk.jartool,jdk.javadoc,jdk.jconsole,jdk.jshell,jdk.jsobject,jdk.management.jfr,jdk.naming.ldap,jdk.net,jdk.scripting.nashorn,jdk.sctp,jdk.security.auth,jdk.security.jgss,jdk.unsupported,jdk.unsupported.desktop,jdk.xml.dom,java.smartcardio"/>
+		</attributes>
+		<accessrules>
+			<accessrule kind="accessible" pattern="javax/smartcardio/**"/>
+		</accessrules>
+	</classpathentry>
+	<classpathentry kind="con" path="org.eclipse.jdt.junit.JUNIT_CONTAINER/4"/>
+	<classpathentry kind="src" path="src"/>
+	<classpathentry kind="src" path="test"/>
+	<classpathentry kind="lib" path="/Users/isaacdubuque/eclipse-workspace/Verilink-Tag/lib/api_classic.jar"/>
+	<classpathentry kind="lib" path="/Users/isaacdubuque/eclipse-workspace/Verilink-Tag/lib/api_classic_annotations.jar"/>
+	<classpathentry kind="lib" path="/Users/isaacdubuque/eclipse-workspace/Verilink-Tag/lib/jcardsim-3.0.4.jar"/>
+	<classpathentry kind="lib" path="/Users/isaacdubuque/eclipse-workspace/Verilink-Tag/lib/bcpkix-jdk15to18-1.70.jar"/>
+	<classpathentry kind="lib" path="/Users/isaacdubuque/eclipse-workspace/Verilink-Tag/lib/bcprov-jdk15to18-1.70.jar"/>
+	<classpathentry kind="output" path="bin"/>
+</classpath>

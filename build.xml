@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="VerilinkTagJavaCardApplet" default="build" basedir=".">
+	<description>
+		Creates .cap file of JavaCard applet for Verilink Tag
+	</description>
+	
+	<get src="https://repo1.maven.org/maven2/org/hamcrest/hamcrest-core/1.3/hamcrest-core-1.3.jar" dest="lib" skipexisting="true" />
+	<get src="https://repo1.maven.org/maven2/junit/junit/4.12/junit-4.12.jar" dest="lib" skipexisting="true" />
+	
+	<taskdef name="javacard" classname="pro.javacard.ant.JavaCard" classpath="lib/ant-javacard.jar"/>
+	
+	<property name="jc.sdk" value="jc304_kit"/>
+	<property name="jc.sdk.path" value="sdks/${jc.sdk}"/>
+	
+	<property name="aid" value="a0:00:00:00:62:03:01:0c:06:03:01:0c:06:01"/>
+	<property name="main.class" value="verilink.tag.applet.VerilinkApplet"/>
+	
+	<!-- Main Build a00000006203010c0603010c0601 -->
+	
+	<target name="build_record">
+		<echo>Java/JVM version: ${ant.java.version}</echo> 
+		<echo>Java/JVM detail version: ${java.version}</echo> 
+		<echo> AID: ${aid}</echo>
+	</target>
+	
+	<target name="init" depends="build_record">
+		<mkdir dir="./bin"/>
+		<mkdir dir="./bin/cap"/>
+	</target>
+	
+	<target name="build" depends="init"
+		description="compile the applet source and build the .cap file">
+		<tstamp/>
+		<javacard jckit="${jc.sdk.path}">
+			<cap targetsdk="${jc.sdk.path}" output="./bin/cap/javacard.cap" sources="./src/">
+				<applet class="${main.class}" aid="${aid}"/>
+			</cap>
+		</javacard>
+	</target>
+	
+	<target name="clean" description="clean the build">
+		<delete dir="./bin"/>
+		<delete dir="./build"/>
+	</target>
+	
+	<!-- Test Build -->
+	<property name="main.build.dir" value="build/main"/>
+	<property name="main.src.dir" value="src"/>
+	<property name="test.build.dir" value="build/test"/>
+	<property name="test.build.src" value="test"/>
+	
+	<!-- Test Libraries -->
+	<property name="jcardsim.path" value="lib/jcardsim-3.0.5.jar"/>
+	
+	<path id="classpath.main">
+		<pathelement location="${jcardsim.path}"/>
+	</path>
+	
+	<path id="classpath.test">
+		<pathelement location="lib/junit-4.12.jar"/>
+		<pathelement location="lib/hamcrest-core-1.3.jar"/>
+		<pathelement location="lib/bcpkix-jdk15to18-1.70.jar"/>
+		<pathelement location="lib/bcprov-jdk15to18-1.70.jar"/>
+		<pathelement location="${jcardsim.path}"/>
+		<pathelement location="${main.build.dir}"/>
+	</path>
+	
+	<target name="compile">
+		<mkdir dir="${main.build.dir}"/>
+		<javac srcdir="${main.src.dir}" destdir="${main.build.dir}" debug="true" includeantruntime="false">
+			<classpath refid="classpath.main"/>
+		</javac>
+	</target>
+	
+	<target name="test-compile" depends="compile">
+		<mkdir dir="${test.build.dir}"/>
+		<javac srcdir="${test.build.src}" destdir="${test.build.dir}" debug="true" includeantruntime="false">
+			<classpath refid="classpath.test"/>
+		</javac>
+	</target>
+	
+	<target name="test" depends="test-compile">
+		<junit printsummary="on" haltonfailure="yes" fork="yes" showoutput="true">
+			<formatter type="brief" usefile="false"/>
+			<classpath>
+				<path refid="classpath.test"/>
+				<pathelement location="${test.build.dir}"/>
+			</classpath>
+			<batchtest>
+				<fileset dir="${test.build.dir}">
+					<include name="**/TestApplet.class"/>
+				</fileset>
+			</batchtest>
+		
+		</junit>
+	</target>
+	
+	<!--
+	<target name="test" depends="test-compile">
+		<junit printsummary="on" haltonfailure="yes" fork="true">
+			<classpath>
+				<path refid="classpath.test"/>
+				<pathelement location="${test.build.dir}"/>
+			</classpath>
+			<formatter type="brief" usefile="false"/>
+			<batchtest>
+				<filset dir="${test.src.dir}" includes="**/*.java"/>
+			</batchtest>
+		</junit>
+	</target>
+	-->
+	<!-- Add custom scripts below -->
+	
+</project>
